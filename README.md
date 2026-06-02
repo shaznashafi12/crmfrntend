@@ -7,7 +7,7 @@ A full-stack MERN application that allows multiple companies (tenants) to manage
 ## Live Demo
 
 Frontend: https://image-galleryft.vercel.app/  
-Backend API: https://image-gallerybk.onrender.com
+Backend API: https://crmbackend-yxzh.onrender.com
 
 
 ## 📁 Project Structure
@@ -89,10 +89,10 @@ root/
 - Middleware automatically filters data based on the authenticated user's company
 
 * **Clone Frontend**
-git clone[https://github.com/shaznashafi12/Image-Galleryft]
+git clone[https://github.com/shaznashafi12/crmfrntend]
 
 * **Clone Backend**
-git clone[https://github.com/shaznashafi12/Image-Gallerybk]
+git clone[https://github.com/shaznashafi12/crmbackend]
 
 ### 👥 Role-Based Access Control (RBAC)
 
