@@ -29,20 +29,20 @@ const useCounter = (target, duration = 1000) => {
 const StatCard = ({ icon: Icon, label, value, sub, iconBg, iconColor, format = 'number' }) => {
   const animated = useCounter(typeof value === 'number' ? Math.round(value) : 0);
   const display = format === 'currency'
-? `₹${animated.toLocaleString()}`
+    ? `₹${animated.toLocaleString()}`
     : format === 'percent'
     ? `${value}%`
     : animated.toLocaleString();
 
   return (
-    <div className="group bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex items-start justify-between gap-3">
-      <div className="space-y-1.5 min-w-0">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">{label}</p>
-        <p className="text-3xl font-bold text-slate-900 leading-none font-mono">{display}</p>
-        {sub && <p className="text-xs text-slate-400 font-medium">{sub}</p>}
+    <div className="group bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex items-start justify-between gap-2">
+      <div className="space-y-1 min-w-0">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{label}</p>
+        <p className="text-2xl font-bold text-slate-900 leading-none font-mono">{display}</p>
+        {sub && <p className="text-[11px] text-slate-400 font-medium leading-tight">{sub}</p>}
       </div>
-      <div className={`flex-shrink-0 flex h-11 w-11 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110 ${iconBg}`}>
-        <Icon size={20} className={iconColor} />
+      <div className={`flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110 ${iconBg}`}>
+        <Icon size={18} className={iconColor} />
       </div>
     </div>
   );
@@ -117,6 +117,7 @@ const GoalItem = ({ label, current, target, done }) => {
     </div>
   );
 };
+
 const Udashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -125,61 +126,58 @@ const Udashboard = () => {
   const [loading, setLoading] = useState(true);
   const [company, setCompany] = useState(null);
 
-useEffect(() => {
-  const load = async () => {
-    try {
-      const [leadsRes, dealsRes, companyRes] = await Promise.all([
-        API.getLeads(),
-        API.getDeals(),
-        API.getMyCompany()
-      ]);
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [leadsRes, dealsRes, companyRes] = await Promise.all([
+          API.getLeads(),
+          API.getDeals(),
+          API.getMyCompany()
+        ]);
 
-      // ✅ COMPANY
-      const c = companyRes?.data?.data;
-      setCompany(c);
+        const c = companyRes?.data?.data;
+        setCompany(c);
 
-      // ✅ LEADS
-      const leads = leadsRes.data.data || [];
-      const lStats = { total: leads.length, new: 0, contacted: 0, qualified: 0, lost: 0 };
-      leads.forEach(l => {
-        if (lStats[l.status] !== undefined) lStats[l.status]++;
-      });
-      setLeadsStats(lStats);
+        const leads = leadsRes.data.data || [];
+        const lStats = { total: leads.length, new: 0, contacted: 0, qualified: 0, lost: 0 };
+        leads.forEach(l => {
+          if (lStats[l.status] !== undefined) lStats[l.status]++;
+        });
+        setLeadsStats(lStats);
 
-      // ✅ DEALS
-      const deals = dealsRes.data.data || [];
-      const dStats = {
-        totalVal: 0,
-        wonVal: 0,
-        count: deals.length,
-        proposal: 0,
-        negotiation: 0,
-        won: 0,
-        lost: 0
-      };
+        const deals = dealsRes.data.data || [];
+        const dStats = {
+          totalVal: 0,
+          wonVal: 0,
+          count: deals.length,
+          proposal: 0,
+          negotiation: 0,
+          won: 0,
+          lost: 0
+        };
 
-      deals.forEach(d => {
-        dStats.totalVal += d.value || 0;
+        deals.forEach(d => {
+          dStats.totalVal += d.value || 0;
+          if (d.stage === "won") {
+            dStats.won++;
+            dStats.wonVal += d.value || 0;
+          } else if (dStats[d.stage] !== undefined) {
+            dStats[d.stage]++;
+          }
+        });
 
-        if (d.stage === "won") {
-          dStats.won++;
-          dStats.wonVal += d.value || 0;
-        } else if (dStats[d.stage] !== undefined) {
-          dStats[d.stage]++;
-        }
-      });
+        setDealsStats(dStats);
 
-      setDealsStats(dStats);
+      } catch (e) {
+        console.error("DASHBOARD ERROR:", e);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    } catch (e) {
-      console.error("DASHBOARD ERROR:", e);
-    } finally {
-      setLoading(false);
-    }
-  };
+    load();
+  }, []);
 
-  load();
-}, []);
   const conversionRate = dealsStats.count > 0 ? Math.round((dealsStats.won / dealsStats.count) * 100) : 0;
 
   const weeklyLeads = [
@@ -207,32 +205,36 @@ useEffect(() => {
   );
 
   return (
-    <div className="space-y-6 max-w-[1200px] mx-auto">
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#2FA77A] to-[#1e7d59] rounded-2xl p-6 text-white shadow-lg shadow-[#2FA77A]/20">
+    <div className="space-y-4 max-w-[1200px] mx-auto px-2 sm:px-0">  {/* ← px-2 on mobile, no padding on sm+ */}
+
+      {/* ── HERO BANNER ── */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-[#2FA77A] to-[#1e7d59] rounded-2xl p-4 sm:p-6 text-white shadow-lg shadow-[#2FA77A]/20">
         <div className="absolute -top-8 -right-8 h-40 w-40 rounded-full bg-white/5" />
         <div className="absolute -bottom-6 -right-4 h-24 w-24 rounded-full bg-white/5" />
-        <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="relative flex flex-col gap-3">
+          {/* Text block */}
           <div>
             <p className="text-sm font-semibold text-white/70 mb-1">{greeting()},</p>
-            <h1 className="text-2xl font-bold tracking-tight leading-none">{user?.name ?? 'there'} 👋</h1>
-
-<p className="text-sm text-white/70 mt-1">
-  🏢 {company?.name} | {company?.subscription}
-</p>
-            <p className="text-sm text-white/60 mt-2">
-              You have <span className="text-white font-bold">{leadsStats.new} new leads</span> and <span className="text-white font-bold">{dealsStats.proposal} deals</span> waiting for action.
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight leading-none">{user?.name ?? 'there'} 👋</h1>
+            <p className="text-xs sm:text-sm text-white/70 mt-1">
+              🏢 {company?.name} | {company?.subscription}
+            </p>
+            <p className="text-xs sm:text-sm text-white/60 mt-2">
+              You have <span className="text-white font-bold">{leadsStats.new} new leads</span> and{' '}
+              <span className="text-white font-bold">{dealsStats.proposal} deals</span> waiting for action.
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          {/* Buttons — stack on mobile, row on md+ */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
             <button
               onClick={() => navigate('/leads')}
-              className="flex items-center gap-2 bg-white text-[#2FA77A] text-sm font-bold px-4 py-2.5 rounded-xl hover:bg-white/90 transition-all shadow-sm"
+              className="flex items-center justify-center gap-2 bg-white text-[#2FA77A] text-sm font-bold px-4 py-2.5 rounded-xl hover:bg-white/90 transition-all shadow-sm"
             >
               View Leads <ArrowRight size={14} />
             </button>
             <button
               onClick={() => navigate('/deals')}
-              className="flex items-center gap-2 bg-white/15 border border-white/20 text-white text-sm font-bold px-4 py-2.5 rounded-xl hover:bg-white/25 transition-all"
+              className="flex items-center justify-center gap-2 bg-white/15 border border-white/20 text-white text-sm font-bold px-4 py-2.5 rounded-xl hover:bg-white/25 transition-all"
             >
               View Deals
             </button>
@@ -240,16 +242,19 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <StatCard icon={Users2}    label="Total Leads"     value={leadsStats.total}      sub={`↑ ${leadsStats.new} new this week`}      iconBg="bg-emerald-50"  iconColor="text-[#2FA77A]" />
-        <StatCard icon={Briefcase} label="Pipeline Value"  value={dealsStats.totalVal}   sub={`${dealsStats.count} active deals`}        iconBg="bg-blue-50"     iconColor="text-blue-500"  format="currency" />
-        <StatCard icon={TrendingUp} label="Won Revenue"    value={dealsStats.wonVal}     sub={`${dealsStats.won} deals closed`}          iconBg="bg-[#2FA77A]/10" iconColor="text-[#2FA77A]" format="currency" />
-        <StatCard icon={Target}    label="Conversion Rate" value={conversionRate}         sub="Won vs total deals"                        iconBg="bg-amber-50"    iconColor="text-amber-500" format="percent" />
+      {/* ── STAT CARDS — 2 cols on mobile, 4 on lg ── */}
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <StatCard icon={Users2}     label="Total Leads"     value={leadsStats.total}    sub={`↑ ${leadsStats.new} new this week`}   iconBg="bg-emerald-50"   iconColor="text-[#2FA77A]" />
+        <StatCard icon={Briefcase}  label="Pipeline Value"  value={dealsStats.totalVal} sub={`${dealsStats.count} active deals`}     iconBg="bg-blue-50"      iconColor="text-blue-500"  format="currency" />
+        <StatCard icon={TrendingUp} label="Won Revenue"     value={dealsStats.wonVal}   sub={`${dealsStats.won} deals closed`}       iconBg="bg-[#2FA77A]/10" iconColor="text-[#2FA77A]" format="currency" />
+        <StatCard icon={Target}     label="Conversion Rate" value={conversionRate}       sub="Won vs total deals"                     iconBg="bg-amber-50"     iconColor="text-amber-500" format="percent" />
       </div>
 
+      {/* ── PIPELINE + GOALS — stacked on mobile, side-by-side on lg ── */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
 
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-5">
+        {/* Pipeline card */}
+        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 space-y-4">
           <div className="flex items-center justify-between border-b border-slate-50 pb-4">
             <div>
               <h3 className="text-sm font-bold text-slate-800">Sales Pipeline Stages</h3>
@@ -263,7 +268,8 @@ useEffect(() => {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+          {/* Progress bars — 1 col on mobile, 2 cols on sm+ */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
             <ProgressBar label="Proposal"    value={dealsStats.proposal}    total={dealsStats.count} color="#F59E0B" />
             <ProgressBar label="Negotiation" value={dealsStats.negotiation} total={dealsStats.count} color="#3B82F6" />
             <ProgressBar label="Won"         value={dealsStats.won}         total={dealsStats.count} color="#2FA77A" />
@@ -281,7 +287,8 @@ useEffect(() => {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-4">
+        {/* Goals card */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 space-y-4">
           <div className="border-b border-slate-50 pb-4">
             <div className="flex items-center gap-2">
               <Flame size={15} className="text-[#2FA77A]" />
@@ -307,9 +314,12 @@ useEffect(() => {
           </div>
         </div>
       </div>
+
+      {/* ── LEAD STATUS + QUICK ACCESS — stacked on mobile, side-by-side on lg ── */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
 
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-4">
+        {/* Lead Status */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 space-y-4">
           <div className="flex items-center justify-between border-b border-slate-50 pb-4">
             <div className="flex items-center gap-2">
               <Activity size={15} className="text-[#2FA77A]" />
@@ -350,7 +360,9 @@ useEffect(() => {
             ))}
           </div>
         </div>
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-4">
+
+        {/* Quick Access */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 space-y-4">
           <div className="border-b border-slate-50 pb-4">
             <h3 className="text-sm font-bold text-slate-800">Quick Access</h3>
             <p className="text-[11px] text-slate-400 mt-0.5">Jump to your most used actions</p>
@@ -358,17 +370,17 @@ useEffect(() => {
 
           <div className="grid grid-cols-2 gap-3">
             {[
-              { label: 'Add New Lead',    icon: Users2,    path: '/leads',  desc: 'Capture a prospect',    color: '#2FA77A' },
-              { label: 'Create Deal',     icon: Briefcase, path: '/deals',  desc: 'Open a new deal',        color: '#3B82F6' },
-              { label: 'View Pipeline',   icon: BarChart2, path: '/deals',  desc: 'Check deal stages',     color: '#8B5CF6' },
-              { label: 'Team Activity',   icon: Activity,  path: '/team',   desc: 'See what team is doing', color: '#F59E0B' },
+              { label: 'Add New Lead',  icon: Users2,    path: '/leads', desc: 'Capture a prospect',     color: '#2FA77A' },
+              { label: 'Create Deal',   icon: Briefcase, path: '/deals', desc: 'Open a new deal',         color: '#3B82F6' },
+              { label: 'View Pipeline', icon: BarChart2, path: '/deals', desc: 'Check deal stages',       color: '#8B5CF6' },
+              { label: 'Team Activity', icon: Activity,  path: '/team',  desc: 'See what team is doing',  color: '#F59E0B' },
             ].map((a) => {
               const Icon = a.icon;
               return (
                 <button
                   key={a.label}
                   onClick={() => navigate(a.path)}
-                  className="group flex flex-col items-start gap-2 p-4 rounded-xl border border-slate-100 hover:border-[#2FA77A]/25 hover:bg-[#2FA77A]/4 transition-all duration-200 text-left"
+                  className="group flex flex-col items-start gap-2 p-3 sm:p-4 rounded-xl border border-slate-100 hover:border-[#2FA77A]/25 hover:bg-[#2FA77A]/4 transition-all duration-200 text-left"
                 >
                   <div
                     className="flex h-9 w-9 items-center justify-center rounded-xl transition-transform duration-200 group-hover:scale-110"
@@ -384,15 +396,16 @@ useEffect(() => {
               );
             })}
           </div>
+
           <div className="mt-2 rounded-xl bg-slate-50 border border-slate-100 p-3">
             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-1.5">
               <Clock size={10} /> Today's Summary
             </p>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { label: 'Leads',   val: leadsStats.new },
-                { label: 'Deals',   val: dealsStats.count },
-                { label: 'Won',     val: dealsStats.won },
+                { label: 'Leads', val: leadsStats.new },
+                { label: 'Deals', val: dealsStats.count },
+                { label: 'Won',   val: dealsStats.won },
               ].map(s => (
                 <div key={s.label} className="text-center">
                   <p className="text-lg font-bold text-slate-900 leading-none">{s.val}</p>

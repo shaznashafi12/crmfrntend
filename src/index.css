@@ -1,1 +1,23 @@
 @import "tailwindcss";
+/* Add these lines to your index.css or App.css */
+/* Removes the grey background — makes everything white by default */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background-color: #ffffff; /* ← white instead of grey */
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100dvh;
+}
+html {
+  background-color: #ffffff !important;
+}
+
+body {
+  background-color: #ffffff !important;
+}

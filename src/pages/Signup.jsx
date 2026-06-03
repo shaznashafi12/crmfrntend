@@ -58,12 +58,17 @@ const Signup = () => {
 
   return (
     <div
-      className="min-h-screen w-full bg-cover bg-center"
-      style={{ backgroundImage: `url(${bg})` }}
+      className="w-full bg-cover bg-center bg-no-repeat overflow-x-hidden"
+      style={{
+        backgroundImage: `url(${bg})`,
+        minHeight: "100dvh",          // ← dvh covers mobile browser chrome (address bar)
+        backgroundColor: "#1a6b50",   // ← fallback color matching your bg image so no grey shows
+      }}
     >
-      <div className="flex min-h-screen w-full">
+      <div className="flex w-full" style={{ minHeight: "100dvh" }}>
 
-]        <div className="hidden md:flex md:w-1/2 md:-ml-32 md:-mt-52 items-center justify-center text-white">
+        {/* Left branding panel — hidden on mobile, unchanged on desktop */}
+        <div className="hidden md:flex md:w-1/2 md:-ml-32 md:-mt-52 items-center justify-center text-white">
           <div className="text-left px-16">
 
             <h1 className="text-5xl font-bold -ml-1 mb-2">
@@ -81,7 +86,8 @@ const Signup = () => {
           </div>
         </div>
 
-        <div className="w-full md:w-1/2 min-h-screen flex items-center justify-center">
+        {/* Right form panel — full-width on mobile, half on desktop */}
+        <div className="w-full md:w-1/2 flex items-center justify-center py-8">
           <div className="w-full max-w-md px-6">
 
             <h2 className="text-3xl font-bold text-[#2FA77A] text-center mb-8">
@@ -146,7 +152,6 @@ const Signup = () => {
                 />
               </div>
 
-              {/* COMPANY */}
               <div>
                 <label className="text-sm text-gray-500 mb-1 block">
                   Company Name (optional)
@@ -161,7 +166,6 @@ const Signup = () => {
                 />
               </div>
 
-              {/* BUTTON */}
               <button
                 type="submit"
                 className="mt-8 w-full py-3 rounded-full text-white font-semibold tracking-wide bg-gradient-to-r from-[#2FA77A] to-[#3BC08A] hover:opacity-90 transition"
