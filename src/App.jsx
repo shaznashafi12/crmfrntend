@@ -10,7 +10,7 @@ import SuperAdminDashboard from "./pages/Sdashboard.jsx";
 import AdminDashboard from "./pages/Dashboard.jsx";
 import UserDashboard from "./pages/Udashboard.jsx";
 import SuperUsers from "./pages/Superusers.jsx";
-import SuperSubscriptions from "./pages/Supersubscriptions .jsx";
+import SuperSubscriptions from "./pages/Supersubscriptions.jsx";
 
 import Leads from "./pages/Leads.jsx";
 import Deals from "./pages/Deals.jsx";
