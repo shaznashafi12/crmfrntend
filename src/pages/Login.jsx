@@ -120,6 +120,15 @@ Welcome back            </h2>
                     )}
                   </button>
                 </div>
+                <div className="flex justify-end mt-1">
+  <button
+    type="button"
+    onClick={() => navigate("/forgot-password")}
+    className="text-xs text-[#2FA77A] font-semibold hover:underline"
+  >
+    Forgot Password?
+  </button>
+</div>
               </div>
 
             </div>
