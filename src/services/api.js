@@ -268,3 +268,16 @@ export const getMyCompany = async () => {
     throw error.response?.data || error.message;
   }
 };
+export const updateCompanySubscription = async (companyId, data) => {
+  try {
+    return await axios.put(
+      `${API_URL}/companies/${companyId}/subscription`,
+      data,
+      {
+        headers: authHeaders(),
+      }
+    );
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
