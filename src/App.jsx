@@ -7,7 +7,7 @@ import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
 import Company from "./components/Company.jsx";
 import SuperAdminDashboard from "./pages/Sdashboard.jsx";
-import AdminDashboard from "./pages/dashboard.jsx";
+import AdminDashboard from "./pages/Dashboard.jsx";
 import UserDashboard from "./pages/Udashboard.jsx";
 import SuperUsers from "./pages/Superusers.jsx";
 import SuperSubscriptions from "./pages/Supersubscriptions .jsx";
