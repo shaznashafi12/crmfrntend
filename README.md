@@ -6,7 +6,7 @@ A full-stack MERN application that allows multiple companies (tenants) to manage
 ---
 ## Live Demo
 
-Frontend: https://image-galleryft.vercel.app/  
+Frontend: https://crmfrntend.vercel.app/ 
 Backend API: https://crmbackend-yxzh.onrender.com
 
 
