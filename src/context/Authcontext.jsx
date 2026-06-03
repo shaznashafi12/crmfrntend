@@ -96,6 +96,20 @@ const login = async (email, password) => {
     setToken(null);
     setUser(null);
   };
+  const updateUser = (newData) => {
+  setUser((prev) => ({
+    ...prev,
+    ...newData,
+  }));
+
+  localStorage.setItem(
+    "crm_user",
+    JSON.stringify({
+      ...JSON.parse(localStorage.getItem("crm_user")),
+      ...newData,
+    })
+  );
+};
 
   return (
     <AuthContext.Provider
@@ -106,6 +120,7 @@ const login = async (email, password) => {
         signup,
         logout,
         loading,
+        updateUser,
         isAuthenticated: !!user,
         isSuperAdmin: user?.role === "superadmin",
         isAdmin: user?.role === "admin",
