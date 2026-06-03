@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000/api";
-
+const API_URL =
+  import.meta.env.VITE_BACKEND_URL || "http://localhost:4000/api";
 
 const authHeaders = () => {
   const token = localStorage.getItem("crm_token");
@@ -60,7 +60,6 @@ export const getLeads = async (params) => {
       headers: authHeaders(),
       params,
     });
-     return res.data; 
   } catch (error) {
     throw error.response?.data || error.message;
   }
@@ -111,7 +110,6 @@ export const getDeals = async () => {
     return await axios.get(`${API_URL}/deals`, {
       headers: authHeaders(),
     });
-     return res.data; 
   } catch (error) {
     throw error.response?.data || error.message;
   }
@@ -183,7 +181,6 @@ export const getActivities = async () => {
     return await axios.get(`${API_URL}/activities`, {
       headers: authHeaders(),
     });
-     return res.data; 
   } catch (error) {
     throw error.response?.data || error.message;
   }
