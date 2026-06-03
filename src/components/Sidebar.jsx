@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/Authcontext.jsx';
 import {
   LayoutDashboard, Users2, Briefcase, FolderGit2, Building2,
   ChevronLeft, ChevronRight, LogOut, Users, CreditCard,

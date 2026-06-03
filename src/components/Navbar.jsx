@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/Authcontext.jsx';
 import { User, LogOut, ShieldAlert } from 'lucide-react';
 const Navbar = () => {
   const { user, logout } = useAuth();

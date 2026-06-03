@@ -5,7 +5,7 @@ import {
   AlertCircle, Trash2, Edit3, Eye, X,
   Save, Loader2
 } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/Authcontext.jsx";
 import { getAllUsers, updateUser, deleteUser } from "../services/api";
 import toast from "react-hot-toast";
 

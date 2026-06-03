@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import bg from "../assets/bggggggg.png";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/Authcontext.jsx";
 import toast from "react-hot-toast";
 
 const Signup = () => {

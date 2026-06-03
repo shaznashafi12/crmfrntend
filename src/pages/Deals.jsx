@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as API from '../services/api.js';
-import Modal from '../components/Modal';
+import Modal from '../components/Modal.jsx';
 import { 
   Plus, 
   Trash2, 

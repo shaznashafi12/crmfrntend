@@ -2,14 +2,12 @@ import axios from "axios";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000/api";
 
-// ------------------- HELPERS -------------------
 
 const authHeaders = () => {
   const token = localStorage.getItem("crm_token");
   return { Authorization: `Bearer ${token}` };
 };
 
-// Generic methods used by some pages directly
 export const post = async (path, data) => {
   return await axios.post(`${API_URL}${path}`, data, {
     headers: authHeaders(),
@@ -28,10 +26,8 @@ export const delete_ = async (path) => {
   });
 };
 
-// Also export as "delete" for named import compatibility (used in Deals/Leads pages)
 export { delete_ as delete };
 
-// ------------------- AUTH -------------------
 
 export const regg = async (data) => {
   try {
@@ -57,7 +53,6 @@ export const getMe = async () => {
   }
 };
 
-// ------------------- LEADS -------------------
 
 export const getLeads = async (params) => {
   try {
@@ -152,7 +147,6 @@ export const deleteDeal = async (id) => {
   }
 };
 
-// ------------------- TEAM -------------------
 
 export const getTeam = async () => {
   try {

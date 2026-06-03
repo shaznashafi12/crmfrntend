@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import * as API from '../services/api';
+import { useAuth } from '../context/Authcontext.jsx';
+import * as API from '../services/api.js';
 import { 
   Users2, 
   Briefcase, 

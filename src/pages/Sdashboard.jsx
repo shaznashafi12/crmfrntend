@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/Authcontext.jsx';
 import { getCompaniesMetrics } from '../services/api';
 import {
   Building2, Users, CreditCard, TrendingUp, Activity,

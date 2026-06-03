@@ -4,7 +4,7 @@ import {
   Clock, Building2, Calendar, Search, Zap, Star,
   Package, ArrowUpRight, RefreshCw, X, Loader2, Users
 } from "lucide-react";
-import { getCompaniesMetrics } from "../services/api";
+import { getCompaniesMetrics } from "../services/api.js";
 import axios from "axios";
 import toast from "react-hot-toast";
 

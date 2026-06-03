@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import * as API from '../services/api';
-import Modal from '../components/Modal';
+import * as API from '../services/api.js';
+import Modal from '../components/Modal.jsx';
 import {
   Plus, Building2, Users, Layers, Coins,
   Activity, User, Mail, Lock, Eye, EyeOff,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as API from '../services/api.js';
 import Modal from '../components/Modal';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/Authcontext.jsx';
 import { 
   Plus, 
   UserPlus, 
