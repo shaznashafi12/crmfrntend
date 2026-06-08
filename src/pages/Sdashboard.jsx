@@ -215,14 +215,7 @@ const Header = ({ user, onRefresh, refreshing }) => {
                 <p className="text-xs font-bold text-slate-800 truncate">{user?.name ?? 'Super Admin'}</p>
                 <p className="text-[10px] text-slate-400 truncate">{user?.email ?? ''}</p>
               </div>
-              {['Profile Settings', 'Platform Settings', 'Sign Out'].map((item) => (
-                <button key={item}
-                  className={`w-full text-left px-4 py-2 text-xs font-medium transition-colors ${
-                    item === 'Sign Out' ? 'text-rose-500 hover:bg-rose-50' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                  }`}>
-                  {item}
-                </button>
-              ))}
+             
             </div>
           )}
         </div>

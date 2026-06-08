@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/Authcontext.jsx';
 import * as API from '../services/api.js';
@@ -8,6 +8,7 @@ import {
   CheckCircle2, Circle, ChevronRight,
   BarChart2, Flame, Star,
 } from 'lucide-react';
+
 
 
 const useCounter = (target, duration = 1000) => {
@@ -118,6 +119,104 @@ const GoalItem = ({ label, current, target, done }) => {
   );
 };
 
+// ── ProfileWidget moved outside Udashboard and outside useEffect ──
+const ProfileWidget = ({ user }) => {
+  const [open, setOpen]     = useState(false);
+  const [name, setName]     = useState(user?.name ?? '');
+  const [email, setEmail]   = useState(user?.email ?? '');
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved]   = useState(false);
+  const [error, setError]   = useState('');
+  const ref = useRef(null);
+  const { updateUser } = useAuth();
+
+  // Close on outside click
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const handleSave = async () => {
+    if (!name.trim()) {
+      setError('Name cannot be empty');
+      return;
+    }
+
+    setSaving(true);
+    setError('');
+
+    try {
+      const res = await API.updateProfile({
+        name: name.trim(),
+      });
+
+      const updatedUser = res?.data?.data;
+
+      updateUser(updatedUser);
+
+      setSaved(true);
+      setTimeout(() => {
+        setSaved(false);
+        setOpen(false);
+      }, 1000);
+
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Update failed');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div ref={ref} className="relative flex-shrink-0">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 border border-white/30 text-white font-bold text-sm hover:bg-white/30 transition-all"
+      >
+        {user?.name?.charAt(0)?.toUpperCase() ?? 'U'}
+      </button>
+
+      {open && (
+        <div className="absolute right-0 top-12 z-50 w-64 rounded-2xl bg-white shadow-xl border border-slate-100 p-4 space-y-3">
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Edit Profile</p>
+
+          <div className="space-y-2">
+            <div>
+              <label className="text-[11px] font-semibold text-slate-500">Name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:border-[#2FA77A] transition-colors"
+              />
+            </div>
+            <div>
+              <label className="text-[11px] font-semibold text-slate-500">Email</label>
+              <input
+                type="email"
+                value={email}
+                disabled
+                className="mt-1 w-full rounded-xl border border-slate-100 bg-slate-50 px-3 py-2 text-sm text-slate-400 cursor-not-allowed"
+              />
+            </div>
+          </div>
+
+          {error && <p className="text-[11px] text-rose-500 font-medium">{error}</p>}
+
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="w-full rounded-xl bg-[#2FA77A] text-white text-sm font-bold py-2 hover:bg-[#278f68] transition-colors disabled:opacity-60"
+          >
+            {saving ? 'Saving…' : saved ? '✓ Saved!' : 'Save Changes'}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Udashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -125,6 +224,7 @@ const Udashboard = () => {
   const [dealsStats, setDealsStats] = useState({ totalVal: 0, wonVal: 0, count: 0, proposal: 0, negotiation: 0, won: 0, lost: 0 });
   const [loading, setLoading] = useState(true);
   const [company, setCompany] = useState(null);
+  const [name, setName] = useState(user?.name || "");
 
   useEffect(() => {
     const load = async () => {
@@ -205,40 +305,54 @@ const Udashboard = () => {
   );
 
   return (
-    <div className="space-y-4 max-w-[1200px] mx-auto px-2 sm:px-0">  {/* ← px-2 on mobile, no padding on sm+ */}
+    <div className="space-y-4 max-w-[1200px] mx-auto px-2 sm:px-0">
 
       {/* ── HERO BANNER ── */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#2FA77A] to-[#1e7d59] rounded-2xl p-4 sm:p-6 text-white shadow-lg shadow-[#2FA77A]/20">
+      <div className="relative  overflow: visible bg-gradient-to-br from-[#2FA77A] to-[#1e7d59] rounded-2xl p-4 sm:p-6 text-white shadow-lg shadow-[#2FA77A]/20">
         <div className="absolute -top-8 -right-8 h-40 w-40 rounded-full bg-white/5" />
         <div className="absolute -bottom-6 -right-4 h-24 w-24 rounded-full bg-white/5" />
-        <div className="relative flex flex-col gap-3">
-          {/* Text block */}
+
+        <div className="relative flex items-start justify-between gap-3">
+
+          {/* LEFT SIDE */}
           <div>
-            <p className="text-sm font-semibold text-white/70 mb-1">{greeting()},</p>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight leading-none">{user?.name ?? 'there'} 👋</h1>
+            <p className="text-sm font-semibold text-white/70 mb-1">
+              {greeting()},
+            </p>
+
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight leading-none">
+              {user?.name ?? 'there'} 👋
+            </h1>
+
             <p className="text-xs sm:text-sm text-white/70 mt-1">
               🏢 {company?.name} | {company?.subscription}
             </p>
+
             <p className="text-xs sm:text-sm text-white/60 mt-2">
               You have <span className="text-white font-bold">{leadsStats.new} new leads</span> and{' '}
               <span className="text-white font-bold">{dealsStats.proposal} deals</span> waiting for action.
             </p>
+
+            {/* Buttons — stack on mobile, row on md+ */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 mt-3">
+              <button
+                onClick={() => navigate('/leads')}
+                className="flex items-center justify-center gap-2 bg-white text-[#2FA77A] text-sm font-bold px-4 py-2.5 rounded-xl hover:bg-white/90 transition-all shadow-sm"
+              >
+                View Leads <ArrowRight size={14} />
+              </button>
+              <button
+                onClick={() => navigate('/deals')}
+                className="flex items-center justify-center gap-2 bg-white/15 border border-white/20 text-white text-sm font-bold px-4 py-2.5 rounded-xl hover:bg-white/25 transition-all"
+              >
+                View Deals
+              </button>
+            </div>
           </div>
-          {/* Buttons — stack on mobile, row on md+ */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-            <button
-              onClick={() => navigate('/leads')}
-              className="flex items-center justify-center gap-2 bg-white text-[#2FA77A] text-sm font-bold px-4 py-2.5 rounded-xl hover:bg-white/90 transition-all shadow-sm"
-            >
-              View Leads <ArrowRight size={14} />
-            </button>
-            <button
-              onClick={() => navigate('/deals')}
-              className="flex items-center justify-center gap-2 bg-white/15 border border-white/20 text-white text-sm font-bold px-4 py-2.5 rounded-xl hover:bg-white/25 transition-all"
-            >
-              View Deals
-            </button>
-          </div>
+
+          {/* RIGHT SIDE → PROFILE WIDGET */}
+          <ProfileWidget user={user} />
+
         </div>
       </div>
 
