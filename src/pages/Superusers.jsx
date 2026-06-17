@@ -240,7 +240,7 @@ const DeleteModal = ({ user, onClose, onDeleted }) => {
             <button onClick={onClose} disabled={deleting} className="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition-colors disabled:opacity-50">
               Cancel
             </button>
-            <button onClick={handleDelete} disabled={deleting} className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-sm font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+            <button onClick={handleDelete} disabled={deleting} className="flex-1 py-2.5 rounded-xl bg-[#2FA77A]  hover:bg-[#2FA77A]/70 text-white text-sm font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2">
               {deleting ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
               {deleting ? "Removing…" : "Yes, Remove"}
             </button>
@@ -342,27 +342,27 @@ const Superusers = () => {
             <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-1">
               Global Platform Administration
             </p>
-            <h1 className="text-2xl font-bold text-slate-900">All Users</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900">All Users</h1>
             <p className="text-sm text-slate-500 mt-0.5">
               Every user across all tenant companies
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { label: "Total Users",    value: stats.total,    icon: Users,     color: "#3B82F6" },
             { label: "Active Users",   value: stats.active,   icon: UserCheck, color: "#2FA77A" },
             { label: "Company Admins", value: stats.admins,   icon: Shield,    color: "#8B5CF6" },
             { label: "Inactive",       value: stats.inactive, icon: UserX,     color: "#EF4444" },
           ].map(({ label, value, icon: Icon, color }) => (
-            <div key={label} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 flex items-center gap-4">
+            <div key={label} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 flex items-center gap-4">
               <div className="h-10 w-10 rounded-xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${color}15`, color }}>
                 <Icon size={18} />
               </div>
-              <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">{label}</p>
+              <div className="min-w-0">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 truncate">{label}</p>
                 <p className="text-2xl font-bold text-slate-900 font-mono">{value}</p>
               </div>
             </div>
@@ -371,8 +371,8 @@ const Superusers = () => {
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
 
           {/* toolbar */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-5 border-b border-slate-50">
-            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 flex-1 min-w-0 focus-within:border-[#2FA77A]/50 transition-all">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-4 sm:p-5 border-b border-slate-50">
+            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 flex-1 min-w-0 w-full focus-within:border-[#2FA77A]/50 transition-all">
               <Search size={14} className="text-slate-400 flex-shrink-0" />
               <input
                 type="text"
@@ -382,7 +382,7 @@ const Superusers = () => {
                 className="bg-transparent text-sm text-slate-700 placeholder:text-slate-400 outline-none w-full"
               />
             </div>
-            <div className="flex items-center gap-2 flex-shrink-0">
+            <div className="flex items-center gap-2 flex-shrink-0 flex-wrap w-full sm:w-auto">
               {["all", "admin", "user"].map(r => (
                 <button
                   key={r}
@@ -401,7 +401,7 @@ const Superusers = () => {
 
           {/* table */}
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm min-w-[640px]">
               <thead>
                 <tr className="border-b border-slate-50 bg-slate-50/50">
                   {["User", "Company", "Role", "Status", "Joined", "Actions"].map(h => (

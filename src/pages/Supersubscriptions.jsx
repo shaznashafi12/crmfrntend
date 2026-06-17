@@ -229,15 +229,15 @@ const Supersubscriptions = () => {
           <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-1">
             Global Platform Administration
           </p>
-          <h1 className="text-2xl font-bold text-slate-900">Subscriptions</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Subscriptions</h1>
           <p className="text-sm text-slate-500 mt-0.5">Manage plans and billing across all companies</p>
         </div>
 
         {/* stat cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5">
             <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Monthly Revenue</p>
-            <p className="text-[28px] font-bold text-slate-900 font-mono mt-1">
+            <p className="text-[22px] sm:text-[28px] font-bold text-slate-900 font-mono mt-1 truncate">
               ₹{totalMRR.toLocaleString()}
             </p>
             <p className="text-xs text-[#2FA77A] font-semibold flex items-center gap-1 mt-1">
@@ -250,13 +250,13 @@ const Supersubscriptions = () => {
             { label: "Premium",         value: premiumCount,      color: "#2FA77A", icon: Zap           },
             { label: "Enterprise",      value: enterpriseCount,   color: "#8B5CF6", icon: Star          },
           ].map(({ label, value, color, icon: Icon }) => (
-            <div key={label} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 flex items-center gap-4">
+            <div key={label} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 flex items-center gap-4">
               <div className="h-10 w-10 rounded-xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${color}15`, color }}>
                 <Icon size={18} />
               </div>
-              <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">{label}</p>
+              <div className="min-w-0">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 truncate">{label}</p>
                 <p className="text-2xl font-bold text-slate-900 font-mono">{value}</p>
               </div>
             </div>
@@ -264,21 +264,21 @@ const Supersubscriptions = () => {
         </div>
 
         {/* plan breakdown */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {Object.entries(PLANS).map(([key, p]) => {
             const count = companies.filter(c => c.subscription === key).length;
             const rev   = companies
               .filter(c => c.subscription === key)
               .reduce((a) => a + p.price, 0);
             return (
-              <div key={key} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+              <div key={key} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5">
                 <div className="flex items-center justify-between mb-3">
                   <PlanBadge plan={key} />
                   <span className="text-xs font-bold text-slate-400">
                     {p.price === 0 ? "Free" : `₹${p.price.toLocaleString()}/mo`}
                   </span>
                 </div>
-                <p className="text-[28px] font-bold text-slate-900 font-mono">{count}</p>
+                <p className="text-[22px] sm:text-[28px] font-bold text-slate-900 font-mono">{count}</p>
                 <p className="text-xs text-slate-400 mt-0.5">companies</p>
                 {rev > 0 && (
                   <p className="text-xs font-semibold text-[#2FA77A] mt-2 flex items-center gap-1">
@@ -294,8 +294,8 @@ const Supersubscriptions = () => {
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
 
           {/* toolbar */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-5 border-b border-slate-50">
-            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 flex-1 focus-within:border-[#2FA77A]/50 transition-all">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-4 sm:p-5 border-b border-slate-50">
+            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 flex-1 w-full focus-within:border-[#2FA77A]/50 transition-all">
               <Search size={14} className="text-slate-400 flex-shrink-0" />
               <input
                 type="text"
@@ -306,7 +306,7 @@ const Supersubscriptions = () => {
               />
             </div>
 
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-2 flex-wrap w-full sm:w-auto">
               {["all", "free", "premium", "enterprise"].map(p => (
                 <button key={p} onClick={() => setPlan(p)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
@@ -319,7 +319,7 @@ const Supersubscriptions = () => {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm min-w-[560px]">
               <thead>
                 <tr className="border-b border-slate-50 bg-slate-50/50">
                   {["Company", "Plan", "Users", "Started", ""].map(h => (

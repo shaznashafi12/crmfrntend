@@ -83,7 +83,7 @@ const { updateUser } = useAuth();
 
       {/* ── Edit popover ── */}
       {open && (
-       <div className="absolute left-1/2 -translate-x-[40%] md:left-auto md:translate-x-0 md:right-0 top-full mt-2 w-64 max-w-[95vw] bg-white rounded-2xl border border-slate-100 shadow-lg shadow-slate-200/60 z-50 p-4 space-y-3">
+       <div className="absolute right-0 left-auto translate-x-0 sm:left-1/2 sm:-translate-x-[40%] md:left-auto md:translate-x-0 md:right-0 top-full mt-2 w-64 max-w-[90vw] bg-white rounded-2xl border border-slate-100 shadow-lg shadow-slate-200/60 z-50 p-4 space-y-3">
 
           {/* Header */}
           <div className="flex items-center justify-between pb-2 border-b border-slate-50">
@@ -267,22 +267,22 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
 
       {/* ── HERO HEADER ── */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-white rounded-2xl p-6 border border-slate-100 shadow-soft gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-soft gap-4">
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight truncate">
             Hello, {user?.name}!
           </h1>
           <p className="text-sm font-medium text-slate-400 mt-1">
             Here is what is happening with your organization's sales metrics today.
           </p>
           {companyInfo.name && (
-            <div className="mt-3 flex items-center space-x-3">
+            <div className="mt-3 flex items-center gap-2 sm:gap-3 flex-wrap">
               <div className="flex items-center space-x-1.5 text-xs font-semibold text-slate-600 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-lg">
-                <Building2 size={13} className="text-brand-light" />
-                <span>{companyInfo.name}</span>
+                <Building2 size={13} className="text-brand-light flex-shrink-0" />
+                <span className="truncate max-w-[140px] sm:max-w-none">{companyInfo.name}</span>
               </div>
               <span className={`text-xs font-bold px-3 py-1.5 rounded-lg border capitalize
                 ${companyInfo.subscription === 'enterprise' ? 'bg-purple-50 text-purple-700 border-purple-100' :
@@ -300,7 +300,7 @@ const Dashboard = () => {
           <ProfileWidget user={user} />
 
           <div className="flex items-center space-x-2 text-xs text-slate-400 font-medium">
-            <Clock size={14} className="text-slate-400" />
+            <Clock size={14} className="text-slate-400 flex-shrink-0" />
             <span>Workspace updated real-time</span>
           </div>
         </div>
@@ -313,39 +313,39 @@ const Dashboard = () => {
       )}
 
       {/* ── STAT CARDS ── */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="flex items-center justify-between bg-white rounded-2xl p-6 border border-slate-100 shadow-soft hover:shadow-premium transition-all duration-300">
-          <div className="space-y-2">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="flex items-center justify-between bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-soft hover:shadow-premium transition-all duration-300 gap-3">
+          <div className="space-y-2 min-w-0">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Leads</span>
-            <h3 className="text-3xl font-bold text-slate-900 font-display">{leadsStats.total}</h3>
+            <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 font-display truncate">{leadsStats.total}</h3>
             <div className="text-xs text-slate-400 font-medium">
               <span className="text-brand-light font-bold">{leadsStats.new} new</span> this week
             </div>
           </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-brand-light">
+          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-brand-light">
             <Users2 size={24} />
           </div>
         </div>
 
-        <div className="flex items-center justify-between bg-white rounded-2xl p-6 border border-slate-100 shadow-soft hover:shadow-premium transition-all duration-300">
-          <div className="space-y-2">
+        <div className="flex items-center justify-between bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-soft hover:shadow-premium transition-all duration-300 gap-3">
+          <div className="space-y-2 min-w-0">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Pipeline Value</span>
-            <h3 className="text-3xl font-bold text-slate-900 font-display">
+            <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 font-display truncate">
               ${dealsStats.totalVal.toLocaleString()}
             </h3>
             <div className="text-xs text-slate-400 font-medium">
               Across <span className="text-brand-light font-bold">{dealsStats.count} deals</span> in progress
             </div>
           </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-50 text-teal-600">
+          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-teal-50 text-teal-600">
             <Briefcase size={24} />
           </div>
         </div>
 
-        <div className="flex items-center justify-between bg-white rounded-2xl p-6 border border-slate-100 shadow-soft hover:shadow-premium transition-all duration-300">
-          <div className="space-y-2">
+        <div className="flex items-center justify-between bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-soft hover:shadow-premium transition-all duration-300 gap-3">
+          <div className="space-y-2 min-w-0">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Closed Won Sales</span>
-            <h3 className="text-3xl font-bold text-slate-900 font-display">
+            <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 font-display truncate">
               ${dealsStats.wonVal.toLocaleString()}
             </h3>
             <div className="text-xs text-slate-400 font-medium">
@@ -355,21 +355,21 @@ const Dashboard = () => {
               </span>
             </div>
           </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-light/10 text-brand-light">
+          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-brand-light/10 text-brand-light">
             <TrendingUp size={24} />
           </div>
         </div>
       </div>
 
       {/* ── ACTIVITY + PIPELINE ── */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-6 lg:col-span-2 space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-50 pb-4">
-            <div className="flex items-center space-x-2">
-              <Activity size={18} className="text-brand-light" />
-              <h3 className="text-base font-bold text-slate-800">Recent Workspace Activities</h3>
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-4 sm:p-6 lg:col-span-2 space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-50 pb-4 gap-2">
+            <div className="flex items-center space-x-2 min-w-0">
+              <Activity size={18} className="text-brand-light flex-shrink-0" />
+              <h3 className="text-base font-bold text-slate-800 truncate">Recent Workspace Activities</h3>
             </div>
-            <span className="text-xs font-semibold text-slate-400">Recent 50 logs</span>
+            <span className="text-xs font-semibold text-slate-400 flex-shrink-0">Recent 50 logs</span>
           </div>
           <div className="flow-root overflow-y-auto max-h-96 pr-2">
             {activities.length === 0 ? (
@@ -412,7 +412,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-6 space-y-6">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-4 sm:p-6 space-y-6">
           <div className="border-b border-slate-50 pb-4">
             <h3 className="text-base font-bold text-slate-800">Sales Pipeline Stages</h3>
             <p className="text-xs text-slate-400 mt-0.5">Summary by stage count</p>

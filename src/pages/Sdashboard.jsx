@@ -75,7 +75,7 @@ const PieChart = ({ data }) => {
     return `M ${cx} ${cy} L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z`;
   };
   return (
-    <div className="flex items-center gap-6">
+    <div className="flex flex-col sm:flex-row items-center gap-6">
       <svg viewBox="0 0 180 180" style={{ width: 160, height: 160, flexShrink: 0 }}>
         <circle cx={cx} cy={cy} r={r + 6} fill="#f8fafc" />
         {slices.map((s, i) => <path key={i} d={arc(s)} fill={s.color} opacity="0.9" />)}
@@ -83,7 +83,7 @@ const PieChart = ({ data }) => {
         <text x={cx} y={cy - 4} textAnchor="middle" fontSize="18" fontWeight="700" fill="#0f172a">{total}</text>
         <text x={cx} y={cy + 14} textAnchor="middle" fontSize="9" fill="#94a3b8">TOTAL</text>
       </svg>
-      <div className="space-y-3">
+      <div className="space-y-3 w-full sm:w-auto">
         {data.map((d) => (
           <div key={d.label} className="flex items-center gap-2.5">
             <span className="inline-block h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: d.color }} />
@@ -120,13 +120,13 @@ const MetricCard = ({ icon: Icon, label, value, sub, accent, format = 'number' }
     format === 'percent'  ? `${value}%` :
     animated.toLocaleString();
   return (
-    <div className="group bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex items-start justify-between gap-3">
+    <div className="group bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex items-start justify-between gap-3">
       <div className="space-y-1.5 min-w-0">
         <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">{label}</p>
-        <p className="text-[28px] font-bold text-slate-900 leading-none font-mono">{display}</p>
-        {sub && <p className="text-xs text-slate-400 font-medium">{sub}</p>}
+        <p className="text-[22px] sm:text-[28px] font-bold text-slate-900 leading-none font-mono truncate">{display}</p>
+        {sub && <p className="text-xs text-slate-400 font-medium truncate">{sub}</p>}
       </div>
-      <div className="flex-shrink-0 flex h-11 w-11 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
+      <div className="flex-shrink-0 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
         style={{ backgroundColor: `${accent}18`, color: accent }}>
         <Icon size={20} />
       </div>
@@ -135,16 +135,16 @@ const MetricCard = ({ icon: Icon, label, value, sub, accent, format = 'number' }
 };
 
 const HealthCard = () => (
-  <div className="group bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex items-start justify-between gap-3">
+  <div className="group bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex items-start justify-between gap-3">
     <div className="space-y-1.5">
       <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">System Health</p>
-      <p className="text-[28px] font-bold text-slate-900 leading-none font-mono">99.9%</p>
+      <p className="text-[22px] sm:text-[28px] font-bold text-slate-900 leading-none font-mono">99.9%</p>
       <div className="flex items-center gap-1.5">
         <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#2FA77A] animate-pulse" />
         <p className="text-xs text-[#2FA77A] font-semibold">All systems operational</p>
       </div>
     </div>
-    <div className="flex-shrink-0 flex h-11 w-11 items-center justify-center rounded-2xl bg-[#2FA77A]/10 text-[#2FA77A] group-hover:scale-110 transition-transform duration-300">
+    <div className="flex-shrink-0 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-[#2FA77A]/10 text-[#2FA77A] group-hover:scale-110 transition-transform duration-300">
       <Server size={20} />
     </div>
   </div>
@@ -172,42 +172,42 @@ const QuickAction = ({ icon: Icon, label, desc, onClick }) => (
 const Header = ({ user, onRefresh, refreshing }) => {
   const [showProfile, setShowProfile] = useState(false);
   return (
-    <header className="h-16 flex items-center justify-between px-6 bg-white border-b border-slate-100 sticky top-0 z-20">
-      <div>
-        <h1 className="text-[15px] font-bold text-slate-900 leading-none">
+    <header className="h-16 flex items-center justify-between px-3 sm:px-6 bg-white border-b border-slate-100 sticky top-0 z-20 gap-2">
+      <div className="min-w-0">
+        <h1 className="text-[13px] sm:text-[15px] font-bold text-slate-900 leading-none truncate">
           Welcome back, <span className="text-[#2FA77A]">Super Admin</span> 👋
         </h1>
-        <p className="text-[11px] text-slate-400 mt-0.5 font-medium">
+        <p className="text-[10px] sm:text-[11px] text-slate-400 mt-0.5 font-medium truncate">
           {new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
         <div className="hidden md:flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 w-56 focus-within:border-[#2FA77A]/50 focus-within:ring-2 focus-within:ring-[#2FA77A]/10 transition-all">
           <Search size={14} className="text-slate-400 flex-shrink-0" />
           <input type="text" placeholder="Search companies, users…" className="bg-transparent text-sm text-slate-700 placeholder:text-slate-400 outline-none w-full" />
         </div>
-        <button className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 border border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-all">
+        <button className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 border border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-all flex-shrink-0">
           <Bell size={16} />
           <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#2FA77A] border-2 border-white" />
         </button>
 
         <button
           onClick={onRefresh}
-          className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 border border-slate-200 text-slate-500 hover:text-[#2FA77A] hover:border-[#2FA77A]/30 transition-all"
+          className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 border border-slate-200 text-slate-500 hover:text-[#2FA77A] hover:border-[#2FA77A]/30 transition-all flex-shrink-0"
         >
           <RefreshCw size={15} className={refreshing ? 'animate-spin text-[#2FA77A]' : ''} />
         </button>
 
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           <button onClick={() => setShowProfile(!showProfile)}
-            className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 hover:border-[#2FA77A]/30 transition-all">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-[#2FA77A] to-[#3BC08A] text-white text-[10px] font-bold uppercase">
+            className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-2 sm:px-3 py-1.5 hover:border-[#2FA77A]/30 transition-all">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-[#2FA77A] to-[#3BC08A] text-white text-[10px] font-bold uppercase flex-shrink-0">
               {user?.name?.[0] ?? 'S'}
             </div>
             <span className="text-xs font-semibold text-slate-700 hidden sm:block max-w-[80px] truncate">
               {user?.name ?? 'Super Admin'}
             </span>
-            <ChevronDown size={12} className="text-slate-400" />
+            <ChevronDown size={12} className="text-slate-400 hidden sm:block" />
           </button>
           {showProfile && (
             <div className="absolute right-0 top-12 w-48 bg-white rounded-2xl border border-slate-100 shadow-xl py-2 z-30">
@@ -325,16 +325,16 @@ const Sdashboard = () => {
     <div className="flex-1 min-h-screen bg-slate-50 overflow-y-auto">
       <Header user={user} onRefresh={() => loadData(true)} refreshing={refreshing} />
 
-      <main className="p-6 space-y-6 max-w-[1400px] mx-auto">
+      <main className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 max-w-[1400px] mx-auto">
         <section>
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-4 gap-2">
             <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Global Metrics</h2>
-            <span className="flex items-center gap-1.5 text-[11px] font-semibold text-[#2FA77A] bg-[#2FA77A]/8 px-3 py-1 rounded-full">
+            <span className="flex items-center gap-1.5 text-[11px] font-semibold text-[#2FA77A] bg-[#2FA77A]/8 px-3 py-1 rounded-full flex-shrink-0">
               <Activity size={11} /> Live data
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-5">
             <MetricCard
               icon={Building2} label="Total Companies"
               value={metrics.totalCompanies}
@@ -365,13 +365,13 @@ const Sdashboard = () => {
         </section>
 
         <section className="grid grid-cols-1 gap-4 lg:grid-cols-5">
-          <div className="lg:col-span-3 bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-sm font-bold text-slate-800">Company Growth — {new Date().getFullYear()}</h3>
+          <div className="lg:col-span-3 bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 space-y-4">
+            <div className="flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <h3 className="text-sm font-bold text-slate-800 truncate">Company Growth — {new Date().getFullYear()}</h3>
                 <p className="text-[11px] text-slate-400 mt-0.5">Cumulative companies registered this year</p>
               </div>
-              <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#2FA77A]">
+              <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#2FA77A] flex-shrink-0">
                 <span className="inline-block h-2 w-2 rounded-full bg-[#2FA77A]" />
                 Companies
               </div>
@@ -386,7 +386,7 @@ const Sdashboard = () => {
             }
           </div>
 
-          <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-4">
+          <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 space-y-4">
             <div>
               <h3 className="text-sm font-bold text-slate-800">Subscription Breakdown</h3>
               <p className="text-[11px] text-slate-400 mt-0.5">By plan type</p>
@@ -414,15 +414,15 @@ const Sdashboard = () => {
           </div>
         </section>
         <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-50 pb-4">
-              <div className="flex items-center gap-2">
-                <Activity size={16} className="text-[#2FA77A]" />
-                <h3 className="text-sm font-bold text-slate-800">Recently Added Companies</h3>
+          <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-50 pb-4 gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <Activity size={16} className="text-[#2FA77A] flex-shrink-0" />
+                <h3 className="text-sm font-bold text-slate-800 truncate">Recently Added Companies</h3>
               </div>
               <button
                 onClick={() => navigate('/companies')}
-                className="text-[11px] font-bold text-[#2FA77A] hover:underline"
+                className="text-[11px] font-bold text-[#2FA77A] hover:underline flex-shrink-0"
               >
                 View all →
               </button>
@@ -451,7 +451,7 @@ const Sdashboard = () => {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm text-slate-700 font-semibold leading-snug truncate">{c.name}</p>
-                          <div className="flex items-center gap-2 mt-0.5">
+                          <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full capitalize ${planBg}`}>
                               {c.subscription}
                             </span>
@@ -471,7 +471,7 @@ const Sdashboard = () => {
             </ul>
           </div>
 
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-4">
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 space-y-4">
             <div className="border-b border-slate-50 pb-4">
               <h3 className="text-sm font-bold text-slate-800">Quick Actions</h3>
               <p className="text-[11px] text-slate-400 mt-0.5">Common admin operations</p>

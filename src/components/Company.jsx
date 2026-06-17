@@ -273,7 +273,7 @@ const DeleteModal = ({ company, onClose, onConfirm }) => {
             <button onClick={onClose} disabled={deleting} className="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition-colors disabled:opacity-50">
               Cancel
             </button>
-            <button onClick={handleDelete} disabled={deleting} className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-sm font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+            <button onClick={handleDelete} disabled={deleting} className="flex-1 py-2.5 rounded-xl bg-[#2FA77A]  hover:bg-[#2FA77A]/70 text-white text-sm font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2">
               {deleting ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
               {deleting ? 'Deleting…' : 'Yes, Delete'}
             </button>
