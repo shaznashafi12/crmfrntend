@@ -33,14 +33,16 @@ export const regg = async (data) => {
   try {
     return await axios.post(`${API_URL}/auth/register`, data);
   } catch (error) {
-throw new Error(error.response?.data?.message || error.message);  }
+    throw new Error(error.response?.data?.message || error.message);
+  }
 };
 
 export const logg = async (data) => {
   try {
     return await axios.post(`${API_URL}/auth/login`, data);
   } catch (error) {
-throw new Error(error.response?.data?.message || error.message);  }
+    throw new Error(error.response?.data?.message || error.message);
+  }
 };
 
 export const getMe = async () => {
@@ -237,6 +239,7 @@ export const getAllUsers = async () => {
     throw error.response?.data || error.message;
   }
 };
+
 export const updateUser = async (id, data) => {
   try {
     return await axios.put(`${API_URL}/auth/users/${id}`, data, {
@@ -256,6 +259,7 @@ export const deleteUser = async (id) => {
     throw error.response?.data || error.message;
   }
 };
+
 export const getMyCompany = async () => {
   try {
     return await axios.get(`${API_URL}/companies/my-company`, {
@@ -265,6 +269,7 @@ export const getMyCompany = async () => {
     throw error.response?.data || error.message;
   }
 };
+
 export const updateCompanySubscription = async (companyId, data) => {
   try {
     return await axios.put(
@@ -278,9 +283,31 @@ export const updateCompanySubscription = async (companyId, data) => {
     throw error.response?.data || error.message;
   }
 };
+
 export const updateProfile = async (data) => {
   try {
     return await axios.put(`${API_URL}/auth/me`, data, {
+      headers: authHeaders(),
+    });
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+
+export const updateCompany = async (id, data) => {
+  try {
+    return await axios.put(`${API_URL}/companies/${id}`, data, {
+      headers: authHeaders(),
+    });
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+
+// ✅ ADDED: was missing — Company.jsx calls API.deleteCompany(id)
+export const deleteCompany = async (id) => {
+  try {
+    return await axios.delete(`${API_URL}/companies/${id}`, {
       headers: authHeaders(),
     });
   } catch (error) {
